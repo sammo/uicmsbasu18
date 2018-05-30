@@ -1,9 +1,8 @@
 # Clean environment
 rm(list=ls())
 
-# Pull data flag
-pullFromDB = TRUE
-
+# Set variables
+source("config.R")
 
 # Get data ####
 
@@ -23,15 +22,6 @@ if (pullFromDB){
   # 											 "Database=UIC;",
   # 											 "UID=myuser;",
   # 											 "PWD=mypwd")
-  
-  # Set database connection string
-  db.connection = paste0(
-    "Driver=/usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so;",
-    "PORT=1433;",
-    "Server=172.17.0.2;",
-    "Database=UIC;",
-    "UID=sa;",
-    "PWD=ABcd12#$;")
   
   # Create connection
   library(RODBC)
@@ -92,6 +82,10 @@ pred.lda = predict(object = mod.lda, newdata = data.valid)
 remVars = c("ReportYear")
 remVarsInd = which(names(reportData) %in% remVars)
 reportData = reportData[, -remVarsInd]
+
+# rownames(reportData) = reportData$ReportID
+data.train = reportData[indTrain, ]
+data.valid = reportData[-indTrain, ]
 
 # Linear Discriminant Analysis, again
 mod.lda = lda(formula = reportFormula, data = data.train)
