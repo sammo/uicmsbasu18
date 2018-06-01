@@ -89,7 +89,7 @@ axis(side = 4, at = yRmarks, labels = TRUE, col.axis = "Tomato",
 		 col.ticks = "Tomato")
 mtext(side = 4, text = "Error Rate", col = "Tomato", line = 2)
 
-
+library(plotly)
 p = plot_ly(
 	x = 100*threshM$Thresh, 
 	y = 100*threshM$PredPerc, 
