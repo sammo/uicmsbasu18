@@ -5,7 +5,7 @@ x = read.csv(file = "DataFrame.csv",
                       header = TRUE, quote = '"')
 
 # Variance threshold
-varThresh = NULL
+varThresh = .98
 
 # Number of clusters to group data points by
 nClusters = 3
