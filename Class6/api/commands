@@ -1,0 +1,56 @@
+# Build Docker Image
+#  Make sure you are at the root of the director ../api
+
+docker build -t uic-api:tag .
+
+
+# Run Docker Image Interactively
+#  Sometimes it is nice to run your container and start a shell (sh or bash)
+#  so you can see the environment that you have built and test different
+#  programs, packages, scripts, etc..
+#
+# --rm tells Docker to remove this container after it has been stopped
+# -ti tells Docker to run this container interactively
+# --name names the container so we can easily work with it
+# uic-api:tag is the image we want to run, the one we just made
+# /bin/bash is the command we want to run as the container starts.  Here we are
+#  starting a bash shell
+#
+# Note this only works if we comment out ENTRYPOINT before building or override
+
+docker run --rm -ti --name uic-api uic-api:tag /bin/bash
+
+
+# Run Docker Image detached
+#  This will run our API and detach the process so we can use it as long as the
+#  container is running
+#
+# -d detaches this container process
+# -p maps the host's (your laptop) port 8000 to the containers port 8000 (API)
+
+docker run -d --name uic-api -p 127.0.0.1:8000:8000 uic-api:tag
+
+
+# Stop/Remove Container
+
+docker stop uic-api
+docker rm uic-api
+
+
+# Sample help request
+#
+# curl is standard utility for making requests
+# -X GET (which is default) tells the server we are expecting something back
+# localhost:8000 is where the API server is running (via docker)
+# /help is the specific endpoint we are trying to access
+
+curl -X GET http://localhost:8000/help
+
+
+# Sample predict request
+#
+# -X POST tells the server we are sending something (an observation or many)
+# -H 'authtoken: uic' sends a header with authoken as the name and uic as the value
+# -d @jsons/good.json is the file we want to post
+
+curl -X POST -H 'authtoken: uic' -d @jsons/good.json http://localhost:8000/predict
